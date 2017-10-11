@@ -1,7 +1,9 @@
 var calculadora = {
-    valor: 0,
-    operador: '',
+    Memoria: "",
+    ValorBoton: "",
+    operador: "",
     operando: 0,
+    Resultado: 0,
 
     animacionuno: function(tecla){
       document.getElementById(tecla).style.transform="scale(0.9)"
@@ -9,99 +11,157 @@ var calculadora = {
                 document.getElementById(tecla).style.transform="scale(1)";}, 200)
     },
 
+    mostrarresultado: function(valorEv){
+
+      if (calculadora.ValorBoton=="on") {
+          calculadora.Memoria = "0";
+          calculadora.Resultado = 0;
+          calculadora.operando = 0;
+          calculadora.operador = ""
+      };
+
+      if (calculadora.ValorBoton == "0" ||
+          calculadora.ValorBoton == "1" ||
+          calculadora.ValorBoton == "2" ||
+          calculadora.ValorBoton == "3" ||
+          calculadora.ValorBoton == "4" ||
+          calculadora.ValorBoton == "5" ||
+          calculadora.ValorBoton == "6" ||
+          calculadora.ValorBoton == "7" ||
+          calculadora.ValorBoton == "8" ||
+          calculadora.ValorBoton == "9") {
+
+          if (calculadora.Memoria == "0") {
+              calculadora.Memoria=""
+          };
+
+          if (calculadora.Memoria=="0" && calculadora.ValorBoton=="0") {
+              calculadora.ValorBoton = ""
+          };
+
+          if (calculadora.Memoria.length+1>8) {
+              calculadora.Memoria = calculadora.Memoria + calculadora.ValorBoton;
+          }
+
+        };
+
+      calculadora.ValorBoton = "";
+      var pantalla = document.getElementById("display");
+      pantalla.textContent = calculadora.Memoria
+    },
+
     on: function(){
         calculadora.animacionuno("on");
-        this.viewdisplay()
+        calculadora.ValorBoton = "on";
+        calculadora.mostrarresultado()
     },
 
     sign: function(){
         calculadora.animacionuno("sign");
-        this.viewdisplay()
+        calculadora.ValorBoton = "sign";
+        calculadora.mostrarresultado()
     },
 
     raiz: function(){
         calculadora.animacionuno("raiz");
-        this.viewdisplay()
+        calculadora.ValorBoton = "raiz";
+        calculadora.mostrarresultado()
     },
 
     dividido: function(){
         calculadora.animacionuno("dividido");
-        this.viewdisplay()
+        calculadora.ValorBoton = "dividido";
+        calculadora.mostrarresultado()
     },
 
     siete: function(){
         calculadora.animacionuno("7");
-        this.viewdisplay()
+        calculadora.ValorBoton = "7",
+        calculadora.mostrarresultado()
     },
 
     ocho: function(){
         calculadora.animacionuno("8");
-        this.viewdisplay()
+        calculadora.ValorBoton = "8",
+        calculadora.mostrarresultado()
     },
 
     nueve: function(){
         calculadora.animacionuno("9");
-        this.viewdisplay()
+        calculadora.ValorBoton = "9";
+        calculadora.mostrarresultado()
     },
 
     por: function(){
         calculadora.animacionuno("por");
-        this.viewdisplay()
+        calculadora.ValorBoton = "por";
+        calculadora.mostrarresultado()
     },
 
     cuatro: function(){
         calculadora.animacionuno("4");
-        this.viewdisplay()
+        calculadora.ValorBoton = "4";
+        calculadora.mostrarresultado()
     },
 
     cinco: function(){
         calculadora.animacionuno("5");
-        this.viewdisplay()
+        calculadora.ValorBoton = "5";
+        calculadora.mostrarresultado()
     },
 
     seis: function(){
         calculadora.animacionuno("6");
-        this.viewdisplay()
+        calculadora.ValorBoton = "6";
+        calculadora.mostrarresultado()
     },
 
     menos: function(){
         calculadora.animacionuno("menos");
-        this.viewdisplay()
+        calculadora.ValorBoton = "menos";
+        calculadora.mostrarresultado()
     },
 
     uno: function(){
         calculadora.animacionuno("1");
-        this.viewdisplay()
+        calculadora.ValorBoton = "1";
+        calculadora.mostrarresultado()
     },
 
     dos: function(){
         calculadora.animacionuno("2");
-        this.viewdisplay()
+        calculadora.ValorBoton = "2";
+        calculadora.mostrarresultado()
     },
 
     tres: function(){
         calculadora.animacionuno("3");
-        this.viewdisplay()
+        calculadora.ValorBoton = "3";
+        calculadora.mostrarresultado()
     },
 
     cero: function(){
         calculadora.animacionuno("0");
-        this.viewdisplay()
+        calculadora.ValorBoton = "0";
+        calculadora.mostrarresultado()
     },
 
     punto: function(){
         calculadora.animacionuno("punto");
-        this.viewdisplay()
+        calculadora.ValorBoton = "punto";
+        calculadora.mostrarresultado()
     },
 
     igual: function(){
         calculadora.animacionuno("igual");
-        this.viewdisplay()
+        calculadora.ValorBoton = "igual";
+        calculadora.mostrarresultado()
     },
 
     mas: function(){
         calculadora.animacionuno("mas");
-        this.viewdisplay()
+        calculadora.ValorBoton = "mas";
+        calculadora.mostrarresultado()
     }
 };
 
@@ -140,7 +200,7 @@ this.signo = 0,
 this.auxnum = 0,
 this.auxestado = 0,
 this.decimal = 0,
-this.viewdisplay();
+calculadora.mostrarresultado();
 on: function(){
 this.animacionuno("on");
 this.pantalla = "0",
@@ -153,7 +213,7 @@ this.auxestado = 0,
 this.auxnum = 0,
 this.opcion = 0,
 this.auxresultado = 0,
-this.viewdisplay();
+calculadora.mostrarresultado();
 },
 
 */
