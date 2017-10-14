@@ -1,9 +1,13 @@
 var calculadora = {
-    Memoria: "",
+    Memoria: "0",
+    puntoDecimal: "",
+    cantidad1: "",
+    cantidad2: "",
+    VecesOp: 1,
     ValorBoton: "",
     operador: "",
-    operando: 0,
     Resultado: 0,
+    estadoError: 0,
 
     animacionuno: function(tecla){
       document.getElementById(tecla).style.transform="scale(0.9)"
@@ -13,42 +17,110 @@ var calculadora = {
 
     mostrarresultado: function(valorEv){
 
-      if (calculadora.ValorBoton=="on") {
-          calculadora.Memoria = "0";
-          calculadora.Resultado = 0;
-          calculadora.operando = 0;
-          calculadora.operador = ""
-      };
-
-      if (calculadora.ValorBoton == "0" ||
-          calculadora.ValorBoton == "1" ||
-          calculadora.ValorBoton == "2" ||
-          calculadora.ValorBoton == "3" ||
-          calculadora.ValorBoton == "4" ||
-          calculadora.ValorBoton == "5" ||
-          calculadora.ValorBoton == "6" ||
-          calculadora.ValorBoton == "7" ||
-          calculadora.ValorBoton == "8" ||
-          calculadora.ValorBoton == "9") {
-
-          if (calculadora.Memoria == "0") {
-              calculadora.Memoria=""
-          };
-
-          if (calculadora.Memoria=="0" && calculadora.ValorBoton=="0") {
-              calculadora.ValorBoton = ""
-          };
-
-          if (calculadora.Memoria.length+1>8) {
-              calculadora.Memoria = calculadora.Memoria + calculadora.ValorBoton;
-          }
-
+        if (calculadora.ValorBoton=="on") {
+            calculadora.Memoria = "0";
+            calculadora.Resultado = 0;
+            calculadora.cantidad1 = "";
+            calculadora.ValorBoton = "";
+            calculadora.operador = "";
+            calculadora.VecesOp = 1;
+            calculadora.estadoError = 0;
         };
 
-      calculadora.ValorBoton = "";
-      var pantalla = document.getElementById("display");
-      pantalla.textContent = calculadora.Memoria
-    },
+        if (calculadora.estadoError==0) {
+
+          if (calculadora.ValorBoton == "punto" &&
+              calculadora.Memoria.indexOf(".") == -1) {
+                calculadora.puntoDecimal = "."
+          };
+
+          if (calculadora.ValorBoton == "0" &&
+              calculadora.Memoria=="0" &&
+              calculadora.puntoDecimal=="") {
+                calculadora.ValorBoton = ""
+              };
+
+          if (calculadora.ValorBoton == "0" ||
+              calculadora.ValorBoton == "1" ||
+              calculadora.ValorBoton == "2" ||
+              calculadora.ValorBoton == "3" ||
+              calculadora.ValorBoton == "4" ||
+              calculadora.ValorBoton == "5" ||
+              calculadora.ValorBoton == "6" ||
+              calculadora.ValorBoton == "7" ||
+              calculadora.ValorBoton == "8" ||
+              calculadora.ValorBoton == "9") {
+
+              if (calculadora.Memoria=="0" &&
+                  calculadora.puntoDecimal=="") {
+                calculadora.Memoria = "";
+              };
+
+              if (calculadora.Memoria.length+1<=8) {
+                  calculadora.Memoria = calculadora.Memoria+
+                                        calculadora.puntoDecimal+
+                                        calculadora.ValorBoton
+              };
+              calculadora.puntoDecimal = "";
+      };
+
+      if (calculadora.ValorBoton == "sign" && calculadora.Memoria !== "0" ) {
+            if ( calculadora.Memoria.substr(0,1) == "-") {
+                calculadora.Memoria = calculadora.Memoria.substr(1, calculadora.Memoria.length)
+            } else {
+              calculadora.Memoria = "-" + calculadora.Memoria
+            };
+            calculadora.ValorBoton = ""
+        };
+
+        if (calculadora.ValorBoton == "mas" ||
+            calculadora.ValorBoton == "por" ||
+            calculadora.ValorBoton == "menos" ||
+            calculadora.ValorBoton == "dividido" ||
+            calculadora.ValorBoton == "igual") {
+
+              if (calculadora.cantidad1!=="") {
+
+                    if (calculadora.VecesOp==1) {
+                        calculadora.cantidadReserva = calculadora.Memoria
+                    };
+                    var resultado;
+                    if (calculadora.operador == "mas") {
+                        resultado = Number(calculadora.cantidad1) + Number(calculadora.cantidadReserva)
+                    };
+                    if (calculadora.operador == "por") {
+                        resultado = Number(calculadora.cantidad1) * Number(calculadora.cantidadReserva)
+                    };
+                    if (calculadora.operador == "menos") {
+                        resultado = Number(calculadora.cantidad1) - Number(calculadora.cantidadReserva)
+                    };
+                    if (calculadora.operador == "dividido") {
+                        resultado = Number(calculadora.cantidad1) / Number(calculadora.cantidadReserva)
+                    };
+                    if ((Math.round(resultado * 100) / 100)>99999999) {
+                        calculadora.Memoria = "Err";
+                        calculadora.estadoError = 1;
+                    }else {
+                      calculadora.Memoria = (Math.round(resultado * 100) / 100).toString();
+                      calculadora.cantidad1 = calculadora.Memoria;
+                      calculadora.VecesOp = 2;
+                    }
+              };
+
+              if (calculadora.ValorBoton !== "igual") {
+                 calculadora.operador = calculadora.ValorBoton;
+                 calculadora.cantidad1 = calculadora.Memoria;
+                 calculadora.Memoria = "";
+                 calculadora.VecesOp = 1;
+              }
+        };
+
+        calculadora.ValorBoton = "";
+        var pantalla = document.getElementById("display");
+        pantalla.textContent = calculadora.Memoria
+
+      };
+   },
 
     on: function(){
         calculadora.animacionuno("on");
